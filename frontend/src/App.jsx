@@ -1,47 +1,22 @@
 import { useState } from 'react'
-import { TextField } from "@radix-ui/themes";
-import { SearchIcon } from "lucide-react";
-import CardComponent from './components/card'
-import { searchPinterest } from './services/api';
+import Items from './components/items'
+import Upload from './components/upload'
 
 function App() {
-
-  const [item, setItem] = useState("");
-  const [images, setImages] = useState([]);
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    const data = await searchPinterest(item);
-    setImages(data.images);
-  }
+  const [wardrobeKey, setWardrobeKey] = useState(0)
 
   return (
-    <>
-        <div className="flex flex-col items-center justify-center w-full mt-10">
-          <h1 className="text-7xl font-bold">FitsIt</h1>
-          
-          <div className="w-full max-w-sm my-10">
-            <form onSubmit={handleSubmit}>
-              <TextField.Root size="3" placeholder="Search for item" value={item} onChange={(e) => setItem(e.target.value)}>
-                <TextField.Slot>
-                  <SearchIcon height="20" width="20" />
-                </TextField.Slot>
-              </TextField.Root>
-            </form>
+    <div className="flex min-h-screen flex-col items-center bg-gray-50">
+      <header className="mt-10 w-full text-center">
+        <h1 className="text-6xl font-bold tracking-tight text-gray-900 sm:text-7xl">FitsIt</h1>
+        <p className="mt-2 text-sm text-gray-500">Upload pieces and browse your digital wardrobe.</p>
+      </header>
 
-
-          </div>
-
-        <div className="flex flex-wrap gap-4 justify-center items-center">
-          
-          {images.map((src, i) => (
-            <CardComponent key={i} src={src} />
-          ))}
-     
-        </div>
-
-        </div> 
-    </>
+      <main className="flex w-full max-w-5xl flex-col items-stretch">
+        <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />
+        <Items refreshTrigger={wardrobeKey} />
+      </main>
+    </div>
   )
 }
 

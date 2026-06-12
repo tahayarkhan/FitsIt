@@ -15,5 +15,6 @@ export const searchPinterest = async (item) => {
     
     console.log(data);
     return data;
+    
 };
 
