@@ -10,6 +10,9 @@ from scipy import ndimage
 from transformers import SegformerImageProcessor, SegformerForSemanticSegmentation
 import torch
 
+from io import BytesIO
+import requests
+
 
 CLOTHING_LABELS = {
     0: "Background",
@@ -57,6 +60,7 @@ class ColorExtractor:
         print(f"Model loaded on device: {self.device}")
 
     def load_image(self, image_path: str) -> Image.Image:
+
         path = Path(image_path)
 
         if not path.exists():
@@ -65,6 +69,8 @@ class ColorExtractor:
         image = Image.open(path).convert("RGB")
 
         print(f"Loaded image: {path.name} ({image.size[0]}x{image.size[1]})")
+
+        
         return image
     
     def create_clothing_mask(self, image: Image.Image):
@@ -260,7 +266,8 @@ class ColorExtractor:
 def main():
     
     extractor = ColorExtractor()
-    extractor.extract_colours('hoodie.jpg')
+    output = extractor.extract_colours('hoodie.jpg')
+    print(output["primary_color"])
     # extractor.save_debug_images('hoodie.jpg')
 
 if __name__ == "__main__":

@@ -10,6 +10,9 @@ from scipy import ndimage
 from transformers import SegformerImageProcessor, SegformerForSemanticSegmentation
 import torch
 
+from io import BytesIO 
+import requests
+
 
 CLOTHING_LABELS = {
     0: "Background",
@@ -56,15 +59,10 @@ class ColorExtractor:
         self.model.to(self.device)
         print(f"Model loaded on device: {self.device}")
 
-    def load_image(self, image_path: str) -> Image.Image:
-        path = Path(image_path)
+    def load_image(self, file_bytes: bytes) -> Image.Image:
 
-        if not path.exists():
-            raise FileNotFoundError(f"Image not found: {image_path}")
-        
-        image = Image.open(path).convert("RGB")
+        image = Image.open(BytesIO(file_bytes)).convert("RGB")
 
-        print(f"Loaded image: {path.name} ({image.size[0]}x{image.size[1]})")
         return image
     
     def create_clothing_mask(self, image: Image.Image):
@@ -87,8 +85,7 @@ class ColorExtractor:
 
         segmentation = unsampled.argmax(dim=1).cpu().numpy()[0]
 
-        
-        
+    
         mask = np.isin(segmentation, list(GARMENT_LABEL_IDS))
 
         unique_labels = np.unique(segmentation)
@@ -173,7 +170,7 @@ class ColorExtractor:
         dominant  = centers[0]
         return int(dominant[0]), int(dominant[1]), int(dominant[2])
 
-    
+
     def rgb_to_hsl(self, r:int, g:int, b:int) -> dict:
 
         # Normalize RGB to 0-1 range
@@ -189,22 +186,21 @@ class ColorExtractor:
             "l": round(l, 3)
         }
 
-    def extract_colours(self, image_path: str, k: int = 4) -> dict:
+    def extract_colours(self, image: Image.Image, k: int = 4) -> dict:
         
-        image = self.load_image(image_path)
         mask, segmentation = self.create_clothing_mask(image)
         cleaned_mask = self.clean_mask(mask)
         
         if np.sum(cleaned_mask) < 100:
             print("Warning: Very few clothing pixels detected")
             return {
+                "cleaned_mask" : cleaned_mask,
                 "primary_color": None,
                 "dominant_rgb": None,
                 "error": "Insufficient clothing pixels detected"
             }
         
-        
-        
+    
         garment_pixels = self.extract_garment_pixels(image, cleaned_mask)  
 
         centers, sizes = self.run_kmeans(garment_pixels, k=k)
@@ -217,6 +213,7 @@ class ColorExtractor:
         print(f"HSL: H={hsl['h']}°, S={hsl['s']:.1%}, L={hsl['l']:.1%}")
 
         return {
+            "cleaned_mask" : cleaned_mask,
             "primary_color": hsl,
             "dominant_rgb": {"r": r, "g": g, "b": b},
             "all_clusters": [
@@ -225,43 +222,31 @@ class ColorExtractor:
             ]
         }
 
-    def save_debug_images(self, image_path: str, output_dir: str = ".") -> None:
-        """Save debug visualization images."""
-        image = self.load_image(image_path)
-        mask, segmentation = self.create_clothing_mask(image)
-        cleaned_mask = self.clean_mask(mask)
+
+    def pil_to_bytes(self, image: Image.Image, fmt: str = "PNG") -> bytes:
+        buf = BytesIO()
+        image.save(buf, format=fmt)
+        return buf.getvalue()
+
+
+    
+
+    def process_upload(self, file_bytes:bytes) -> dict:
         
-        output_path = Path(output_dir)
-        base_name = Path(image_path).stem
-        
-        # Save mask visualization
-        mask_img = Image.fromarray((cleaned_mask * 255).astype(np.uint8))
-        mask_img.save(output_path / f"{base_name}_mask.png")
-        print(f"Saved: {base_name}_mask.png")
-        
-        # Save masked image (clothing only)
+        image = self.load_image(file_bytes)
+        res = self.extract_colours(image)
+
+        cleaned_mask = res['cleaned_mask']
+
         img_array = np.array(image)
         masked_array = img_array.copy()
-        masked_array[cleaned_mask == 0] = [255, 255, 255]  # White background
+        masked_array[cleaned_mask == 0] = [255, 255, 255]  
         masked_img = Image.fromarray(masked_array)
-        masked_img.save(output_path / f"{base_name}_masked.png")
-        print(f"Saved: {base_name}_masked.png")
-        
-        # Save full segmentation visualization
-        colors = np.random.randint(0, 255, (len(CLOTHING_LABELS), 3), dtype=np.uint8)
-        colors[0] = [0, 0, 0]  # Background is black
-        seg_colored = colors[segmentation]
-        seg_img = Image.fromarray(seg_colored)
-        seg_img.save(output_path / f"{base_name}_segmentation.png")
-        print(f"Saved: {base_name}_segmentation.png")
+     
+        masked_bytes = self.pil_to_bytes(masked_img, fmt="JPEG")
+
+        return {"masked_bytes": masked_bytes, "colours": res}
 
 
-
-def main():
     
-    extractor = ColorExtractor()
-    # extractor.extract_colours('hoodie.jpg')
-    # extractor.save_debug_images('hoodie.jpg')
-
-if __name__ == "__main__":
-    main()
+        

@@ -1,10 +1,13 @@
 import os
 from uuid import uuid4
-
+import asyncio
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from supabase import create_client
+
+from color_extraction import ColorExtractor
+from io import BytesIO
 
 load_dotenv()
 
@@ -34,6 +37,9 @@ CATEGORY_TO_FOLDER = {
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 
 
+extractor = ColorExtractor()
+
+
 def _origins() -> list[str]:
     raw = os.getenv("FRONTEND", "http://localhost:5173,http://127.0.0.1:5173")
     return [o.strip() for o in raw.split(",") if o.strip()]
@@ -46,6 +52,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 @app.get("/")
@@ -87,20 +94,24 @@ async def upload_item(
     if not file_bytes:
         raise HTTPException(status_code=400, detail="Empty file.")
 
-    ext = _safe_extension(file.filename, file.content_type)
+
+    output = await asyncio.to_thread(extractor.process_upload, file_bytes)
+
+    masked_bytes = output['masked_bytes']
+
+    ext = ".jpg"
     uid = str(uuid4())
     folder = CATEGORY_TO_FOLDER[cat]
     storage_path = f"{folder}/{uid}{ext}"
 
     bucket = supabase.storage.from_(BUCKET_NAME)
-    file_options = {}
-    if file.content_type:
-        file_options["content-type"] = file.content_type
+    file_options = {"content-type": "image/jpeg"}
+
 
     try:
         bucket.upload(
             storage_path,
-            file_bytes,
+            masked_bytes,
             file_options=file_options or None,
         )
     except Exception as exc:
@@ -108,12 +119,19 @@ async def upload_item(
 
     image_url = bucket.get_public_url(storage_path)
 
+    
+    colours = output['colours']
+    primary_colour = colours["primary_color"]
+    dominant_rgb = colours["dominant_rgb"]
+
+
     row = {
         "image_url": image_url,
         "storage_path": storage_path,
         "category": cat,
-        "primary_colour": None,
+        "primary_colour": primary_colour,
         "secondary_colour": None,
+        "dominant_rgb": dominant_rgb,
     }
 
     try:
