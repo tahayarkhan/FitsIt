@@ -3,3 +3,7 @@ venv/
 __pycache__/
 backend/.env
 frontend/.env
+scope.md
+prompt.md
+test/
+testing_data/
