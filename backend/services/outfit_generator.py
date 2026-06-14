@@ -14,8 +14,6 @@ class Outfit(TypedDict):
     shoes: OutfitItem
     outerwear: OutfitItem | None
 
-
-
 class OutfitGenerator:
     
     def __init__(self, supabase_client):
