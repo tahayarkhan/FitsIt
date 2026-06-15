@@ -6,4 +6,4 @@ frontend/.env
 scope.md
 prompt.md
 test/
-testing_data/
+testing_data/.DS_Store
