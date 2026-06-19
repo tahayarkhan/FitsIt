@@ -12,13 +12,13 @@ const Navigation = () => {
 
   return (
     <>
-    <nav className="self-center bg-black my-10 px-6 py-2 rounded-full w-fit h-full ">
+    <nav className="self-center bg-black mt-10 px-6 py-2 rounded-full w-4/5 h-full md:w-3/5 lg:w-1/2">
       <div className="flex justify-center gap-4">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`rounded-xl px-4 py-1.5 text-sm font-normal transition-colors
+            className={`rounded-full px-4 py-1.5 text-sm font-normal transition-colors
               ${
                 activeTab === tab
                   ? "bg-white text-black"
