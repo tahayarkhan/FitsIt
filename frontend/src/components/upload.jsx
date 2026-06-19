@@ -53,7 +53,7 @@ function Upload({ onSuccess }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
+    <form onSubmit={handleSubmit} className="justify-center w-full py-8 px-5 ">
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">Add an item</h2>
       <p className="mt-1 text-sm text-gray-500">Choose a category and upload a clothing photo.</p>
 
@@ -122,7 +122,7 @@ function Upload({ onSuccess }) {
         </p>
       )}
 
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex justify-center">
         <button
           type="submit"
           disabled={submitting}
@@ -131,6 +131,7 @@ function Upload({ onSuccess }) {
           {submitting ? 'Uploading…' : 'Upload'}
         </button>
       </div>
+
     </form>
   )
 }

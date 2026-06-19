@@ -13,11 +13,11 @@ function App() {
         <p className="mt-2 text-sm text-gray-500">Upload pieces and browse your digital wardrobe.</p>
       </header>
 
-      <main className="flex w-full max-w-5xl flex-col items-stretch">
+      <div className="flex w-full max-w-5xl flex-col items-stretch">
         <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />
         <Items refreshTrigger={wardrobeKey} />
         <Recommendations/>
-      </main>
+      </div>
     </div>
   )
 }

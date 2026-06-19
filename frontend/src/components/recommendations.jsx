@@ -96,7 +96,7 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                     </div>
 
                     {/* Reasons */}
-                    <div className="mt-4 flex flex-wrap gap-2">
+                    {/* <div className="mt-4 flex flex-wrap gap-2">
                         {rec.reasons.map((reason, i) => (
                         <span
                             key={i}
@@ -105,7 +105,7 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                             {reason}
                         </span>
                         ))}
-                    </div>
+                    </div> */}
                     </div>
                 ))}
                 </div>
