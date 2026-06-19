@@ -48,7 +48,7 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
-                <div className="grid grid-cols-3 justify-start mt-8 space-y-6 gap-5">
+                <div className="grid grid-cols-3 justify-start mt-8 space-y-6 gap-5 md:grid-cols-5">
                 {recommendations.map((rec, index) => (
                     <div
                     key={index}
@@ -67,7 +67,6 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                         {/* Top */}
                         
                         <div>
-                        {/* <p className="text-sm font-medium">Top</p> */}
                         <img
                             src={rec.outfit.top.image_url}
                             alt="top"
@@ -77,7 +76,6 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
 
                         {/* Bottom */}
                         <div>
-                        {/* <p className="text-sm font-medium">Bottom</p> */}
                         <img
                             src={rec.outfit.bottom.image_url}
                             alt="bottom"
@@ -87,7 +85,6 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
 
                         {/* Shoes */}
                         <div>
-                        {/* <p className="text-sm font-medium">Shoes</p> */}
                         <img
                             src={rec.outfit.shoes.image_url}
                             alt="shoes"
