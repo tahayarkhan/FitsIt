@@ -4,6 +4,8 @@ import Items from "./items";
 import Recommendations from "./recommendations";
 
 const Navigation = () => {
+
+  const [wardrobeKey, setWardrobeKey] = useState(0)
   const [activeTab, setActiveTab] = useState("+");
 
   const tabs = ["+", "Items", "Outfits", "Wardrobe"];
@@ -30,8 +32,8 @@ const Navigation = () => {
     </nav>
     
     <div className="mt-6">
-        {activeTab === "Add Item" && <Upload />}
-        {activeTab === "Items" && <Items />}
+        {activeTab === "+" && <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />}
+        {activeTab === "Items" && <Items refreshTrigger={wardrobeKey}/>}
         {activeTab === "Outfits" && <Recommendations />}
         {/* {activeTab === "Wardrobe" && <Wardrobe />} */}
     </div>

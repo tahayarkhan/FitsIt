@@ -1,11 +1,7 @@
 import { useState } from 'react'
-import Items from './components/items'
-import Upload from './components/upload'
-import Recommendations from './components/recommendations'
 import Navigation from './components/navigation'
 
 function App() {
-  const [wardrobeKey, setWardrobeKey] = useState(0)
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-gray-50">
@@ -15,9 +11,6 @@ function App() {
 
       <div className="flex w-full max-w-5xl flex-col items-stretch">
         <Navigation/>
-        <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />
-        <Items refreshTrigger={wardrobeKey} />
-        <Recommendations/>
       </div>
     </div>
   )
