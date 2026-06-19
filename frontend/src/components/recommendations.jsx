@@ -1,9 +1,9 @@
 import React from 'react'
 
-const recommendations = () => {
+const Recommendations = () => {
   return (
     <div>recommendations</div>
   )
 }
 
-export default recommendations
+export default Recommendations

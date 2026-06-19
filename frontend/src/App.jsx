@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Items from './components/items'
 import Upload from './components/upload'
+import Recommendations from './components/recommendations'
 
 function App() {
   const [wardrobeKey, setWardrobeKey] = useState(0)
@@ -15,6 +16,7 @@ function App() {
       <main className="flex w-full max-w-5xl flex-col items-stretch">
         <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />
         <Items refreshTrigger={wardrobeKey} />
+        <Recommendations/>
       </main>
     </div>
   )
