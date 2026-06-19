@@ -2,7 +2,7 @@ import statistics
 
 from itertools import combinations
 
-from backend.utils.color_utils import (hue_distance_deg, is_neutral, lightness_contrast, rgb_to_lch)
+from utils.color_utils import (hue_distance_deg, is_neutral, lightness_contrast, rgb_to_lch)
 
 class OutfitScorer:
 
