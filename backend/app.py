@@ -9,6 +9,10 @@ from supabase import create_client
 from color_extraction import ColorExtractor
 from io import BytesIO
 
+from services.outfit_generator import OutfitGenerator
+from services.outfit_scorer import OutfitScorer
+
+
 load_dotenv()
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -152,3 +156,52 @@ async def upload_item(
 async def get_items():
     result = supabase.table("clothing_items").select("*").execute()
     return {"items": result.data or []}
+
+
+generator = OutfitGenerator(supabase)
+scorer = OutfitScorer()
+
+
+# @app.get("/recommendations")
+
+# async def get_recommendations(top_n: int = 5, include_outerwear: bool = False):
+
+#     outfits = await asyncio.to_thread(generator.generate_outfits, include_outerwear)
+
+#     if not outfits:
+#         return {
+#             "recommendations": [],
+#             "total_generated": 0,
+#             "message": "Not enough items. Need at least 1 top, 1 bottom, and 1 pair of shoes."
+#         }
+    
+#     scored = []
+
+#     for outfit in outfits:
+#         score_result = scorer.score_outfit(outfit)
+#         scored.append({
+#             "outfit": {
+#                 "top": _slim_item(outfit["top"]),
+#                 "bottom": _slim_item(outfit["bottom"]),
+#                 "shoes": _slim_item(outfit["shoes"]),
+#                 "outerwear": _slim_item(outfit.get("outerwear"))
+#             },
+#             **score_result
+#         })
+    
+#     return {
+#         "recommendations": scored,
+#         "total_generated": len(scored),
+#         "message": None
+#     }
+    
+
+
+def _slim_item(item: dict | None) -> dict | None:
+    if not item:
+        return None
+    return {
+        "id": item.get("id"),
+        "image_url": item.get("image_url"),
+        "category": item.get("category")
+    }
