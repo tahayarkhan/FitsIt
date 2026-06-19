@@ -37,7 +37,7 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
 
     
     return (
-        <div className="w-full bg-white">
+        <div className="w-full">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900">Your Recommendations</h2>
 
@@ -48,11 +48,11 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
-                <div className="mt-8 space-y-6">
+                <div className="flex justify-start mt-8 space-y-6 gap-5">
                 {recommendations.map((rec, index) => (
                     <div
                     key={index}
-                    className="rounded-xl border p-4 shadow-sm bg-gray-50"
+                    className="w-fit h-fit rounded-xl border p-4 shadow-sm bg-white"
                     >
                     <p className="font-semibold text-lg">
                         Score: {rec.score}
@@ -63,34 +63,35 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                     </p>
 
                     {/* Outfit */}
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-rows-3 gap-4">
                         {/* Top */}
+                        
                         <div>
-                        <p className="text-sm font-medium">Top</p>
+                        {/* <p className="text-sm font-medium">Top</p> */}
                         <img
                             src={rec.outfit.top.image_url}
                             alt="top"
-                            className="w-full h-40 object-cover rounded-lg"
+                            className="w-40 h-40 object-cover rounded-lg"
                         />
                         </div>
 
                         {/* Bottom */}
                         <div>
-                        <p className="text-sm font-medium">Bottom</p>
+                        {/* <p className="text-sm font-medium">Bottom</p> */}
                         <img
                             src={rec.outfit.bottom.image_url}
                             alt="bottom"
-                            className="w-full h-40 object-cover rounded-lg"
+                            className="w-40 h-40 object-cover rounded-lg"
                         />
                         </div>
 
                         {/* Shoes */}
                         <div>
-                        <p className="text-sm font-medium">Shoes</p>
+                        {/* <p className="text-sm font-medium">Shoes</p> */}
                         <img
                             src={rec.outfit.shoes.image_url}
                             alt="shoes"
-                            className="w-full h-40 object-cover rounded-lg"
+                            className="w-40 h-40 object-cover rounded-lg"
                         />
                         </div>
                     </div>
