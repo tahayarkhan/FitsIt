@@ -48,11 +48,67 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
+                <div className="mt-8 space-y-6">
+                {recommendations.map((rec, index) => (
+                    <div
+                    key={index}
+                    className="rounded-xl border p-4 shadow-sm bg-gray-50"
+                    >
+                    <p className="font-semibold text-lg">
+                        Score: {rec.score}
+                    </p>
 
+                    <p className="text-sm text-gray-500 mb-4">
+                        Confidence: {rec.confidence}
+                    </p>
 
+                    {/* Outfit */}
+                    <div className="grid grid-cols-3 gap-4">
+                        {/* Top */}
+                        <div>
+                        <p className="text-sm font-medium">Top</p>
+                        <img
+                            src={rec.outfit.top.image_url}
+                            alt="top"
+                            className="w-full h-40 object-cover rounded-lg"
+                        />
+                        </div>
 
+                        {/* Bottom */}
+                        <div>
+                        <p className="text-sm font-medium">Bottom</p>
+                        <img
+                            src={rec.outfit.bottom.image_url}
+                            alt="bottom"
+                            className="w-full h-40 object-cover rounded-lg"
+                        />
+                        </div>
 
+                        {/* Shoes */}
+                        <div>
+                        <p className="text-sm font-medium">Shoes</p>
+                        <img
+                            src={rec.outfit.shoes.image_url}
+                            alt="shoes"
+                            className="w-full h-40 object-cover rounded-lg"
+                        />
+                        </div>
+                    </div>
 
+                    {/* Reasons */}
+                    <div className="mt-4 flex flex-wrap gap-2">
+                        {rec.reasons.map((reason, i) => (
+                        <span
+                            key={i}
+                            className="text-xs bg-black text-white px-2 py-1 rounded-full"
+                        >
+                            {reason}
+                        </span>
+                        ))}
+                    </div>
+                    </div>
+                ))}
+                </div>
 
             </div>
         </div>
