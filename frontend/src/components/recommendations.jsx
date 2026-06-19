@@ -38,7 +38,8 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
     
     return (
         <div className="w-full">
-            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-5 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900">Your Recommendations</h2>
 
                 {loading && <p className="mt-8 text-sm text-gray-500">Loading…</p>}
@@ -48,11 +49,10 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
-                <div className="grid grid-cols-3 justify-start mt-8 space-y-6 gap-5 md:grid-cols-5">
-                {recommendations.map((rec, index) => (
+                <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">                {recommendations.map((rec, index) => (
                     <div
                     key={index}
-                    className="w-fit h-fit rounded-xl border p-4 shadow-sm bg-white"
+                    className="rounded-xl border p-4 shadow-sm bg-white w-full"                    
                     >
                     <p className="font-semibold text-lg">
                         Score: {rec.score}

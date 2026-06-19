@@ -12,7 +12,7 @@ const Navigation = () => {
 
   return (
     <>
-    <nav className="self-center bg-black my-10 px-6 py-2 rounded-full w-3/4 h-full">
+    <nav className="self-center bg-black my-10 px-6 py-2 rounded-full w-fit h-full ">
       <div className="flex justify-center gap-4">
         {tabs.map((tab) => (
           <button
