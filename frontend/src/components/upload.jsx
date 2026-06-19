@@ -53,7 +53,7 @@ function Upload({ onSuccess }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="self-center w-3/4 py-8 px-5">
+    <form onSubmit={handleSubmit} className="self-center w-full py-8">
       <h2 className="text-center text-2xl font-bold tracking-tight text-gray-900">Add an item</h2>
       <p className="text-center mt-1 text-sm text-gray-500">Choose a category and upload a clothing photo.</p>
 
