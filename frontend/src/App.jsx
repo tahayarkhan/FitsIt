@@ -10,7 +10,6 @@ function App() {
     <div className="flex min-h-screen flex-col items-center bg-gray-50">
       <header className="mt-10 w-full text-center">
         <h1 className="text-6xl font-bold tracking-tight text-gray-900 sm:text-7xl">FitsIt</h1>
-        <p className="mt-2 text-sm text-gray-500">Upload pieces and browse your digital wardrobe.</p>
       </header>
 
       <div className="flex w-full max-w-5xl flex-col items-stretch">
