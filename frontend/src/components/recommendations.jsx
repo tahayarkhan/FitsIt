@@ -48,7 +48,7 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
-                <div className="flex justify-start mt-8 space-y-6 gap-5">
+                <div className="flex grid grid-cols-3 justify-start mt-8 space-y-6 gap-5">
                 {recommendations.map((rec, index) => (
                     <div
                     key={index}
