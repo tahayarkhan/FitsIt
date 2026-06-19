@@ -39,14 +39,16 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
     return (
         <div className="w-full">
             <div className="mx-5 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900">Your Recommendations</h2>
+
+                
                 {loading && <p className="mt-8 text-sm text-gray-500">Loading…</p>}
                 {error && (
                 <p className="mt-8 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
                     {error}
                 </p>
                 )}
-
-                <h2 className="text-2xl font-bold tracking-tight text-gray-900">Your Recommendations</h2>
 
                 <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">                {recommendations.map((rec, index) => (
                     <div
