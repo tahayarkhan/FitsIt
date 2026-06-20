@@ -8,3 +8,7 @@ create table public.clothing_items (
   dominant_rgb jsonb,
   created_at timestamp default now()
 );
+
+ALTER TABLE public.clothing_items ENABLE ROW LEVEL SECURITY;
+
+GRANT SELECT, INSERT ON public.clothing_items TO anon, authenticated, service_role;
