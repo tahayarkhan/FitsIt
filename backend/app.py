@@ -262,27 +262,6 @@ def _format_recommendation(row: dict) -> dict:
     }
 
 
-def _outfit_item_id(outfit: dict, clothing_type: str) -> str:
-    item = outfit.get(clothing_type) 
-    if not isinstance(item, dict):
-        raise HTTPException(status_code=400, detail=f"Missing outfit.{clothing_type}.id")
-    item_id = item.get("id")
-    if not item_id:
-        raise HTTPException(status_code=400, detail=f"Missing outfit.{clothing_type}.id")
-    return item_id
-
-def _optional_outfit_item_id(outfit: dict, slot: str) -> str | None:
-    item = outfit.get(slot)
-    if item is None:
-        return None
-    if not isinstance(item, dict):
-        raise HTTPException(status_code=400, detail=f"Invalid outfit.{slot}")
-    item_id = item.get("id")
-    if not item_id:
-        raise HTTPException(status_code=400, detail=f"Invalid outfit.{slot}")
-    return item_id
-
-
 
 
 @app.get("/wardrobe")
