@@ -83,24 +83,6 @@ async def root():
     return {"message": "FitsIt API"}
 
 
-def _safe_extension(filename: str | None, content_type: str | None) -> str:
-    if filename and "." in filename:
-        ext = "." + filename.rsplit(".", 1)[-1].lower()
-        if ext in ALLOWED_EXTENSIONS:
-            return ext
-    if content_type:
-        ct = content_type.split(";")[0].strip().lower()
-        mapping = {
-            "image/jpeg": ".jpg",
-            "image/png": ".png",
-            "image/gif": ".gif",
-            "image/webp": ".webp",
-        }
-        if ct in mapping:
-            return mapping[ct]
-    return ".jpg"
-
-
 @app.post("/upload-item")
 async def upload_item(
     file: UploadFile = File(...),
@@ -260,7 +242,6 @@ def _format_recommendation(row: dict) -> dict:
         "confidence": row["confidence"],
         "liked": row.get("liked", False),
     }
-
 
 
 
