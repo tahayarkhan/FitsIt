@@ -205,3 +205,12 @@ def _slim_item(item: dict | None) -> dict | None:
         "image_url": item.get("image_url"),
         "category": item.get("category")
     }
+
+
+@app.post("/wardrobe")
+async def save_outfit(item: list[dict]):
+
+    
+
+    return -1
+
