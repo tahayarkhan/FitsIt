@@ -20,3 +20,7 @@ create unique index wardrobe_unique_outfit_combo_idx
     shoes_id,
     coalesce(outerwear_id, '00000000-0000-0000-0000-000000000000'::uuid)
   );
+
+
+ALTER TABLE public.wardrobe ENABLE ROW LEVEL SECURITY;
+GRANT SELECT, INSERT ON public.wardrobe TO anon, authenticated, service_role;
