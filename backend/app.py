@@ -1,3 +1,4 @@
+from multiprocessing.reduction import duplicate
 import os
 from uuid import uuid4
 import asyncio
@@ -273,6 +274,64 @@ async def save_outfit(body: dict):
             status_code=400,
             detail=f"Invalid confidence. Must be one of: {', '.join(sorted(ALLOWED_CONFIDENCE))}",
         )
+
+    item_ids = [top_id, bottom_id, shoes_id]
+
+    if outerwear_id:
+        item_ids.append(outerwear_id)
+    
+    
+    try:
+        items_result = (
+            supabase.table("clothing_table").select("id, category").in_("id", items_ids).execute()
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Database lookup failed: {exc!s}") from exc
+
+    items_by_id = {row["id"]: row for row in (items_result.data or [])}
+
+    if len(items_by_id) != len(item_ids):
+        raise HTTPException(status_code=400, detail="One or more clothing items not found.")
+
+    clothing_item_ids = {
+        "top" : top_id, 
+        "bottom" : bottom_id,
+        "shoes" : shoes_id,
+    }
+
+    if outerwear_id:
+        clothing_item_ids["outerwear"] = outerwear_id
+    
+    for type_of_item, item_id in clothing_item_ids.items():
+        expected = OUTFIT_SLOT_CATEGORIES[type_of_item]
+        if items_by_id[item_id]["category"] != expected:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Item {item_id} is not a {expected}.",
+            )
+        
+    duplicate_query = (
+        supabase.table("wardrobe").select("id").eq("top_id", top_id).eq("bottom_id", bottom_id).eq("shoes_id", shoes_id)
+    )
+
+    if outerwear_id:
+        duplicate_query = duplicate_query.eq("outerwear_id", outerwear_id)
+    else:
+        duplicate_query = duplicate_query.is_("outerwear_id", "null")
+    
+
+    try:
+        existing = duplicate_query.execute()
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Database lookup failed: {exc!s}") from exc
+    
+    if existing.data:
+        raise HTTPException(status_code=409, detail="Outfit already saved")
+    
+
+    
+
+
 
     
 
