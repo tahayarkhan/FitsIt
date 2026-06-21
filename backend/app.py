@@ -221,7 +221,6 @@ async def get_recommendations(top_n: int = 5):
             supabase.table("recommendations")
             .select(RECOMMENDATION_SELECT)
             .order("score", desc=True)
-            .limit(top_n)
             .execute()
         )
     except Exception as exc:
@@ -283,118 +282,6 @@ def _optional_outfit_item_id(outfit: dict, slot: str) -> str | None:
         raise HTTPException(status_code=400, detail=f"Invalid outfit.{slot}")
     return item_id
 
-
-@app.post("/wardrobe")
-async def save_outfit(body: dict):
-    outfit = body.get("outfit")
-
-    if not isinstance(outfit, dict):
-        raise HTTPException(status_code=400, detail="Missing or invalid outfit.")
-    
-    top_id = _outfit_item_id(outfit, "top")
-    bottom_id = _outfit_item_id(outfit, "bottom")
-    shoes_id = _outfit_item_id(outfit, "shoes")
-    outerwear_id = _optional_outfit_item_id(outfit, "outerwear")
-
-    score = body.get("score")
-
-    if score is None:
-        raise HTTPException(status_code=400, detail="Missing score.")
-
-    components = body.get("components")
-
-    if not isinstance(components, dict):
-        raise HTTPException(status_code=400, detail="Missing or invalid components.")
-
-
-    reasons = body.get("reasons")
-
-    if not isinstance(reasons, list):
-        raise HTTPException(status_code=400, detail="Missing or invalid reasons.")
-
-
-    confidence = body.get("confidence")
-
-    if confidence not in ALLOWED_CONFIDENCE:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid confidence. Must be one of: {', '.join(sorted(ALLOWED_CONFIDENCE))}",
-        )
-
-    item_ids = [top_id, bottom_id, shoes_id]
-
-    if outerwear_id:
-        item_ids.append(outerwear_id)
-    
-    
-    try:
-        items_result = (
-            supabase.table("clothing_items").select("id, category").in_("id", item_ids).execute()
-        )
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Database lookup failed: {exc!s}") from exc
-
-    items_by_id = {row["id"]: row for row in (items_result.data or [])}
-
-    if len(items_by_id) != len(item_ids):
-        raise HTTPException(status_code=400, detail="One or more clothing items not found.")
-
-    clothing_item_ids = {
-        "top" : top_id, 
-        "bottom" : bottom_id,
-        "shoes" : shoes_id,
-    }
-
-    if outerwear_id:
-        clothing_item_ids["outerwear"] = outerwear_id
-    
-    for type_of_item, item_id in clothing_item_ids.items():
-        expected = OUTFIT_SLOT_CATEGORIES[type_of_item]
-        if items_by_id[item_id]["category"] != expected:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Item {item_id} is not a {expected}.",
-            )
-        
-    duplicate_query = (
-        supabase.table("wardrobe").select("id").eq("top_id", top_id).eq("bottom_id", bottom_id).eq("shoes_id", shoes_id)
-    )
-
-    if outerwear_id:
-        duplicate_query = duplicate_query.eq("outerwear_id", outerwear_id)
-    else:
-        duplicate_query = duplicate_query.is_("outerwear_id", "null")
-    
-
-    try:
-        existing = duplicate_query.execute()
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Database lookup failed: {exc!s}") from exc
-    
-    if existing.data:
-        raise HTTPException(status_code=409, detail="Outfit already saved")
-    
-    row = {
-        "top_id": top_id,
-        "bottom_id": bottom_id,
-        "shoes_id": shoes_id, 
-        "outerwear_id" : outerwear_id,
-        "score": score, 
-        "components" : components,
-        "reasons" : reasons,
-        "confidence" : confidence,
-    }
-
-    try:
-        result = supabase.table("wardrobe").insert(row).execute()
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Database insert failed: {exc!s}") from exc
-    
-    if not result.data:
-        raise HTTPException(status_code=502, detail="Database insert failed.")
-
-
-    return result.data[0]
 
 
 
