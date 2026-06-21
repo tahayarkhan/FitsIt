@@ -328,13 +328,6 @@ async def save_outfit(body: dict):
     if existing.data:
         raise HTTPException(status_code=409, detail="Outfit already saved")
     
-
-    
-
-
-
-    
-
     row = {
         "top_id": top_id,
         "bottom_id": bottom_id,
@@ -346,9 +339,13 @@ async def save_outfit(body: dict):
         "confidence" : confidence,
     }
 
-
-    result = supabase.table("wardrobe").insert(row).execute()
-
+    try:
+        result = supabase.table("wardrobe").insert(row).execute()
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Database insert failed: {exc!s}") from exc
+    
+    if not result.data:
+        raise HTTPException(status_code=502, detail="Database insert failed.")
 
 
     return result.data[0]
