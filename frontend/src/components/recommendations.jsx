@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { API_BASE } from '../config'
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 
 const Recommendations = ({ refreshTrigger = 0 }) => {
     const [recommendations, setRecommendations] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [liked, setLiked] = useState({});
 
     const load = useCallback(async () => {
         setLoading(true)
@@ -34,6 +36,13 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
         load()
     }, [load, refreshTrigger])
 
+    const toggleLike = (index) => {
+        setLiked(prev => ({
+            ...prev,
+            [index]: !prev[index]
+        }));
+    };
+
 
     
     return (
@@ -50,11 +59,26 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
-                <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">                {recommendations.map((rec, index) => (
+                <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">                
+                    
+                    {recommendations.map((rec, index) => (
                     <div
                     key={index}
-                    className="rounded-xl border p-4 shadow-sm bg-white w-full"                    
+                    className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
                     >
+                    
+                    <button
+                        onClick={() => toggleLike(index)}
+                        className="absolute top-3 right-3 text-xl"
+                    >
+                        {liked[index] ? (
+                            <FaHeart className="text-red-500" />
+                        ) : (
+                            <FaRegHeart className="text-gray-400 hover:text-red-500" />
+                        )}
+                    </button>
+                
+                    
                     <p className="font-semibold text-lg">
                         Score: {rec.score}
                     </p>

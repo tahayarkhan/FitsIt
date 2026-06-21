@@ -1,4 +1,3 @@
-from multiprocessing.reduction import duplicate
 import os
 from uuid import uuid4
 import asyncio
@@ -6,6 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from supabase import create_client
+
 
 from color_extraction import ColorExtractor
 from io import BytesIO
