@@ -40,6 +40,15 @@ CATEGORY_TO_FOLDER = {
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 
+ALLOWED_CONFIDENCE = frozenset({"high", "medium", "low"})
+
+OUTFIT_SLOT_CATEGORIES = {
+    "top": "top",
+    "bottom": "bottom",
+    "shoes": "shoes",
+    "outerwear": "outerwear",
+}
+
 
 extractor = ColorExtractor()
 
@@ -207,10 +216,14 @@ def _slim_item(item: dict | None) -> dict | None:
     }
 
 
-@app.post("/wardrobe")
-async def save_outfit(item: list[dict]):
+def _outfit_item_id(outfit: dict, clothing_type: str) -> str:
+    item = outfit.get(clothing_type) 
+    if not isinstance(item, dict):
+        raise HTTPException(status_code=400, detail=f"Missing outfit.{clothing_type}.id")
+    item_id = item.get("id")
+    if not item_id:
+        raise HTTPException(status_code=400, detail=f"Missing outfit.{clothing_type}.id")
+    return item_id
 
-    
 
-    return -1
 
