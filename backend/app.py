@@ -283,7 +283,7 @@ async def save_outfit(body: dict):
     
     try:
         items_result = (
-            supabase.table("clothing_table").select("id, category").in_("id", items_ids).execute()
+            supabase.table("clothing_items").select("id, category").in_("id", item_ids).execute()
         )
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"Database lookup failed: {exc!s}") from exc

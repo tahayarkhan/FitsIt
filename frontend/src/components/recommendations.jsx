@@ -36,11 +36,40 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
         load()
     }, [load, refreshTrigger])
 
-    const toggleLike = (index) => {
-        setLiked(prev => ({
-            ...prev,
-            [index]: !prev[index]
-        }));
+    const toggleLike = async (rec, index) => {
+        
+        try {
+            const body = {
+                outfit: rec.outfit, 
+                score: rec.score,
+                components: rec.components,
+                reasons: rec.reasons,
+                confidence: rec.confidence
+            };
+
+            const res = await fetch(`${API_BASE}/wardrobe`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.detail || "Failed to save outfit");
+            }
+            setLiked(prev => ({
+                ...prev,
+                [index]: !prev[index]
+            }));
+
+        } catch (err) {
+            console.error(err);
+            alert(err.message);
+        }
+    
     };
 
 
@@ -68,7 +97,8 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                     >
                     
                     <button
-                        onClick={() => toggleLike(index)}
+                        disabled={liked[index]}
+                        onClick={() => toggleLike(rec,index)}
                         className="absolute top-3 right-3 text-xl"
                     >
                         {liked[index] ? (
