@@ -13,13 +13,8 @@ create table public.recommendations (
 );
 
 
-CREATE UNIQUE INDEX recommendations_unique_outfit
-ON public.recommendations (
-    top_id,
-    bottom_id,
-    shoes_id,
-    COALESCE(outerwear_id, '00000000-0000-0000-0000-000000000000')
-);
+create unique index recommendations_unique_outfit_idx
+  on public.recommendations (top_id, bottom_id, shoes_id);
 
 ALTER TABLE public.recommendations ENABLE ROW LEVEL SECURITY;
 GRANT SELECT, INSERT ON public.recommendations TO anon, authenticated, service_role;

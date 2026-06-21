@@ -34,7 +34,7 @@ const Navigation = () => {
     <div className="mt-6">
         {activeTab === "+" && <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />}
         {activeTab === "Items" && <Items refreshTrigger={wardrobeKey}/>}
-        {activeTab === "Outfits" && <Recommendations />}
+        {activeTab === "Outfits" && <Recommendations refreshTrigger={wardrobeKey} />}
         {/* {activeTab === "Wardrobe" && <Wardrobe />} */}
     </div>
     </>

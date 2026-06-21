@@ -63,7 +63,49 @@ class OutfitGenerator:
             else:
                 outfits.append(base_outfit)
         return outfits
-    
+
+    def generate_outfits_for_item(self, item: OutfitItem) -> list[Outfit]:
+        """Outfits that include the given item (top, bottom, or shoes only)."""
+        category = item.get("category")
+        if category not in ("top", "bottom", "shoes"):
+            return []
+
+        items = self.fetch_items_by_category()
+        if not items["top"] or not items["bottom"] or not items["shoes"]:
+            return []
+
+        outfits: list[Outfit] = []
+
+        if category == "top":
+            pairs = product(items["bottom"], items["shoes"])
+            for bottom, shoes in pairs:
+                outfits.append({
+                    "top": item,
+                    "bottom": bottom,
+                    "shoes": shoes,
+                    "outerwear": None,
+                })
+        elif category == "bottom":
+            pairs = product(items["top"], items["shoes"])
+            for top, shoes in pairs:
+                outfits.append({
+                    "top": top,
+                    "bottom": item,
+                    "shoes": shoes,
+                    "outerwear": None,
+                })
+        else:
+            pairs = product(items["top"], items["bottom"])
+            for top, bottom in pairs:
+                outfits.append({
+                    "top": top,
+                    "bottom": bottom,
+                    "shoes": item,
+                    "outerwear": None,
+                })
+
+        return outfits
+
 
 
 
