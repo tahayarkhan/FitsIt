@@ -247,10 +247,32 @@ async def save_outfit(body: dict):
     top_id = _outfit_item_id(outfit, "top")
     bottom_id = _outfit_item_id(outfit, "bottom")
     shoes_id = _outfit_item_id(outfit, "shoes")
-    outerwear_id = _outfit_item_id(outfit, "outerwear")
+    outerwear_id = _optional_outfit_item_id(outfit, "outerwear")
+
+    score = body.get("score")
+
+    components = body.get("components")
+
+    reasons = body.get("reasons")
+
+    confidence = body.get("confidence")
+
+    row = {
+        "top_id": top_id,
+        "bottom_id": bottom_id,
+        "shoes_id": shoes_id, 
+        "outerwear_id" : outerwear_id,
+        "score": score, 
+        "components" : components,
+        "reasons" : reasons,
+        "confidence" : confidence,
+    }
 
 
+    result = supabase.table("wardrobe").insert(row).execute()
+    
 
-    return outfit
+
+    return result.data[0]
 
 
