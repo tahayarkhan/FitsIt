@@ -7,7 +7,6 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
     const [recommendations, setRecommendations] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [liked, setLiked] = useState({});
 
     const load = useCallback(async () => {
         setLoading(true)
@@ -36,41 +35,6 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
         load()
     }, [load, refreshTrigger])
 
-    const toggleLike = async (rec, index) => {
-        
-        try {
-            const body = {
-                outfit: rec.outfit, 
-                score: rec.score,
-                components: rec.components,
-                reasons: rec.reasons,
-                confidence: rec.confidence
-            };
-
-            const res = await fetch(`${API_BASE}/wardrobe`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(body)
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.detail || "Failed to save outfit");
-            }
-            setLiked(prev => ({
-                ...prev,
-                [index]: !prev[index]
-            }));
-
-        } catch (err) {
-            console.error(err);
-            alert(err.message);
-        }
-    
-    };
 
 
     
@@ -95,18 +59,6 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                     key={index}
                     className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
                     >
-                    
-                    <button
-                        disabled={liked[index]}
-                        onClick={() => toggleLike(rec,index)}
-                        className="absolute top-3 right-3 text-xl"
-                    >
-                        {liked[index] ? (
-                            <FaHeart className="text-red-500" />
-                        ) : (
-                            <FaRegHeart className="text-gray-400 hover:text-red-500" />
-                        )}
-                    </button>
                 
                     
                     <p className="font-semibold text-lg">
