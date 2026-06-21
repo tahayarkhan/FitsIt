@@ -287,5 +287,5 @@ def _optional_outfit_item_id(outfit: dict, slot: str) -> str | None:
 
 @app.get("/wardrobe")
 async def get_wardrobe():
-    result = supabase.table("wardrobe").select("*").execute()
+    result = supabase.table("recommendations").select("*").eq("liked", "true").execute()
     return {"outfits": result.data or []}
