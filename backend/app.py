@@ -251,11 +251,30 @@ async def save_outfit(body: dict):
 
     score = body.get("score")
 
+    if score is None:
+        raise HTTPException(status_code=400, detail="Missing score.")
+
     components = body.get("components")
+
+    if not isinstance(components, dict):
+        raise HTTPException(status_code=400, detail="Missing or invalid components.")
+
 
     reasons = body.get("reasons")
 
+    if not isinstance(reasons, list):
+        raise HTTPException(status_code=400, detail="Missing or invalid reasons.")
+
+
     confidence = body.get("confidence")
+
+    if confidence not in ALLOWED_CONFIDENCE:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid confidence. Must be one of: {', '.join(sorted(ALLOWED_CONFIDENCE))}",
+        )
+
+    
 
     row = {
         "top_id": top_id,
@@ -270,7 +289,7 @@ async def save_outfit(body: dict):
 
 
     result = supabase.table("wardrobe").insert(row).execute()
-    
+
 
 
     return result.data[0]
