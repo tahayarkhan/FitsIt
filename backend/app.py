@@ -225,5 +225,32 @@ def _outfit_item_id(outfit: dict, clothing_type: str) -> str:
         raise HTTPException(status_code=400, detail=f"Missing outfit.{clothing_type}.id")
     return item_id
 
+def _optional_outfit_item_id(outfit: dict, slot: str) -> str | None:
+    item = outfit.get(slot)
+    if item is None:
+        return None
+    if not isinstance(item, dict):
+        raise HTTPException(status_code=400, detail=f"Invalid outfit.{slot}")
+    item_id = item.get("id")
+    if not item_id:
+        raise HTTPException(status_code=400, detail=f"Invalid outfit.{slot}")
+    return item_id
+
+
+@app.post("/wardrobe")
+async def save_outfit(body: dict):
+    outfit = body.get("outfit")
+
+    if not isinstance(outfit, dict):
+        raise HTTPException(status_code=400, detail="Missing or invalid outfit.")
+    
+    top_id = _outfit_item_id(outfit, "top")
+    bottom_id = _outfit_item_id(outfit, "bottom")
+    shoes_id = _outfit_item_id(outfit, "shoes")
+    outerwear_id = _outfit_item_id(outfit, "outerwear")
+
+
+
+    return outfit
 
 
