@@ -349,3 +349,10 @@ async def save_outfit(body: dict):
 
 
     return result.data[0]
+
+
+
+@app.get("/wardrobe")
+async def get_items():
+    result = supabase.table("wardrobe").select("*").execute()
+    return {"outfits": result.data or []}
