@@ -349,5 +349,3 @@ async def save_outfit(body: dict):
 
 
     return result.data[0]
-
-
