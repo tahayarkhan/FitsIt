@@ -36,6 +36,9 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
     }, [load, refreshTrigger])
 
 
+    
+
+
 
     
     return (
@@ -59,8 +62,16 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                     key={index}
                     className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
                     >
+
+                    {/* <FaHeart/> */}
+
+                    {rec.liked ? (
+                        <FaHeart className="absolute top-4 right-4 text-red-500 cursor-pointer" />
+                    ) : (
+                        <FaRegHeart className='absolute top-4 right-4 text-gray-400 hover:text-red-500 cursor-pointer'/>
+                    )}
+
                 
-                    
                     <p className="font-semibold text-lg">
                         Score: {rec.score}
                     </p>

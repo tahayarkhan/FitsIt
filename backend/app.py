@@ -217,6 +217,8 @@ async def get_recommendations(top_n: int = 5):
     }
 
 
+
+
 def _slim_item(item: dict | None) -> dict | None:
     if not item:
         return None
