@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { API_BASE } from '../config'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { use } from 'react';
 
 
 const Recommendations = ({ refreshTrigger = 0 }) => {
@@ -31,12 +32,39 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
 
     }, [])
 
+
+    const toggleLike = useCallback(async (rec) => {
+        const newLiked = !rec.liked
+
+        try {
+            const res = await fetch(`${API_BASE}/recommendations/${rec.id}?liked=${newLiked}`, { method: 'PATCH'})
+            const data = await res.json()
+
+            if (!res.ok) {
+                throw new Error(data.detail || res.statusText || 'Failed to update like')
+            }
+
+            setRecommendations((prev) => 
+                prev.map((item) => 
+                    item.id === rec.id ? {...item, liked:newLiked} : item
+                )
+            )
+
+        } catch (e) {
+            setError(e.message || 'Failed to update like')
+        }
+
+    }, [])
+
+
     useEffect(() => {
         load()
     }, [load, refreshTrigger])
 
 
-    
+
+
+
 
 
 
@@ -65,12 +93,20 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
 
                     {/* <FaHeart/> */}
 
-                    {rec.liked ? (
-                        <FaHeart className="absolute top-4 right-4 text-red-500 cursor-pointer" />
-                    ) : (
-                        <FaRegHeart className='absolute top-4 right-4 text-gray-400 hover:text-red-500 cursor-pointer'/>
-                    )}
+                    <button
+                        type="button"
+                        onClick={() => toggleLike(rec)}
+                        className="absolute top-4 right-4"
+                    >
 
+                        {rec.liked ? (
+                            <FaHeart className="text-red-500 cursor-pointer" />
+                        ) : (
+                            <FaRegHeart className='text-gray-400 hover:text-red-500 cursor-pointer'/>
+                        )}
+
+                    </button>
+                    
                 
                     <p className="font-semibold text-lg">
                         Score: {rec.score}
