@@ -217,6 +217,28 @@ async def get_recommendations(top_n: int = 5):
     }
 
 
+@app.patch("/recommendations/{recommendation_id}")
+async def update_recommendation(recommendation_id: str, liked: bool):
+        try:
+            result = (
+                supabase.table("recommendations")
+                .update({"liked": liked})
+                .eq("id", recommendation_id)
+                .execute()
+            )
+        except Exception as exc:
+            raise HTTPException(
+                status_code=502,
+                detail=f"Database update failed: {exc!s}",
+            ) from exc
+        
+        
+        return {
+            "message": "Recommendation updated",
+        }
+        
+        
+
 
 
 def _slim_item(item: dict | None) -> dict | None:
