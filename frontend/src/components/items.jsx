@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { API_BASE } from '../config'
+import { motion } from "framer-motion"
 
 const CATEGORY_ORDER = ['top', 'bottom', 'shoes', 'outerwear', 'other']
 
@@ -56,8 +57,7 @@ function Items({ refreshTrigger = 0 }) {
 
   return (
     <div className="w-full">
-      <div className="mx-5 max-w-7xl px-4 py-12">
-      <h2 className="text-2xl font-bold tracking-tight text-gray-900">Your Items</h2>
+      <div className="mx-5 max-w-7xl px-4 py-12">          
         {loading && <p className="mt-8 text-sm text-gray-500">Loading…</p>}
         {error && (
           <p className="mt-8 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
@@ -65,13 +65,26 @@ function Items({ refreshTrigger = 0 }) {
           </p>
         )}
 
+
+        {!loading && !error&& (
+            <motion.h2 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl font-bold tracking-tight text-gray-900">
+                Your Items
+            </motion.h2>
+        )}
+
+
         {!loading && !error && !hasAny && (
           <p className="mt-8 text-sm text-gray-500">No items yet. Upload a photo above.</p>
         )}
 
+
         {!loading &&
           !error &&
-          hasAny &&
+          hasAny && 
           CATEGORY_ORDER.map((cat) => {
             const list = groups[cat] || []
             if (list.length === 0) return null
