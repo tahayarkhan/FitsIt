@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Upload from "./upload";
 import Items from "./items";
 import Recommendations from "./recommendations";
+import Wardrobe from "./wardrobe";
 
 const Navigation = () => {
 
@@ -35,7 +36,7 @@ const Navigation = () => {
         {activeTab === "+" && <Upload onSuccess={() => setWardrobeKey((k) => k + 1)} />}
         {activeTab === "Items" && <Items refreshTrigger={wardrobeKey}/>}
         {activeTab === "Outfits" && <Recommendations refreshTrigger={wardrobeKey} />}
-        {/* {activeTab === "Wardrobe" && <Wardrobe />} */}
+        {activeTab === "Wardrobe" && <Wardrobe refreshTrigger={wardrobeKey} />}
     </div>
     </>
     
