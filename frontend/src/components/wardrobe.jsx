@@ -80,7 +80,7 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
                                 
                                 <div>
                                 <img
-                                    src={outfit.top.image_url}
+                                    src={outfit.outfit.top.image_url}
                                     alt="top"
                                     className="w-40 h-40 object-cover rounded-lg"
                                 />
@@ -89,7 +89,7 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
                                 {/* Bottom */}
                                 <div>
                                 <img
-                                    src={outfit.bottom.image_url}
+                                    src={outfit.outfit.bottom.image_url}
                                     alt="bottom"
                                     className="w-40 h-40 object-cover rounded-lg"
                                 />
@@ -98,7 +98,7 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
                                 {/* Shoes */}
                                 <div>
                                 <img
-                                    src={outfit.shoes.image_url}
+                                    src={outfit.outfit.shoes.image_url}
                                     alt="shoes"
                                     className="w-40 h-40 object-cover rounded-lg"
                                 />

@@ -271,5 +271,9 @@ def _format_recommendation(row: dict) -> dict:
 
 @app.get("/wardrobe")
 async def get_wardrobe():
-    result = supabase.table("recommendations").select("*").eq("liked", "true").execute()
-    return {"outfits": result.data or []}
+    result = supabase.table("recommendations").select(RECOMMENDATION_SELECT).eq("liked", "true").execute()
+
+    rows = result.data or []
+    outfits = [_format_recommendation(row) for row in rows]
+
+    return {"outfits": outfits or []}
