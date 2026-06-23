@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { API_BASE } from '../config'
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+
 
 
 
@@ -32,6 +34,28 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
 
     }, [])
 
+
+
+    const toggleLike = useCallback(async (outfit) => {
+        const newLiked = !outfit.liked
+
+        try {
+            const res = await fetch(`${API_BASE}/recommendations/${outfit.id}?liked=${newLiked}`, { method: 'PATCH'})
+            const data = await res.json()
+
+            if (!res.ok) {
+                throw new Error(data.detail || res.statusText || 'Failed to update like')
+            }
+
+            setOutfits((prev) => prev.filter((item) => item.id !== outfit.id))
+
+
+        } catch (e) {
+            setError(e.message || 'Failed to update like')
+        }
+
+    }, [])
+
     useEffect(() => {
         load()
     }, [load, refreshTrigger])
@@ -55,16 +79,32 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
+                
+
+
 
                 <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">
 
                     {outfits.map((outfit, index) => (
-                        
                         <div
                         key={index}
                         className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
                         >
-                            
+                            <button
+                                type="button"
+                                onClick={() => toggleLike(outfit)}
+                                className="absolute top-4 right-4"
+                            >
+
+                                {outfit.liked ? (
+                                    <FaHeart className="text-red-500 cursor-pointer" />
+                                ) : (
+                                    <FaRegHeart className='text-gray-400 hover:text-red-500 cursor-pointer'/>
+                                )}
+
+                            </button>
+
+
                             <p className="font-semibold text-lg">
                                 Score: {outfit.score}
                             </p>
