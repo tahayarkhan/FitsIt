@@ -4,9 +4,6 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { motion } from "framer-motion"
 
 
-
-
-
 const Wardrobe = ({ refreshTrigger = 0 }) => {
     
     const [outfits, setOutfits] = useState([])

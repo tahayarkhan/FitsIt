@@ -174,7 +174,7 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                             </span>
                             ))}
                         </div> */}
-                        
+
                     </motion.div>
                 ))}
                 </div>
