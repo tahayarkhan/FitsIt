@@ -71,16 +71,16 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
             <div className="mx-5 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 
                 
-            {!loading && !error && (
-                <motion.h2 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2 }}
-                className="text-2xl font-bold tracking-tight text-gray-900"
-                >
-                    Your Wardrobe
-                </motion.h2>
-            )}
+                {!loading && !error && (
+                    <motion.h2 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-2xl font-bold tracking-tight text-gray-900"
+                    >
+                        Your Wardrobe
+                    </motion.h2>
+                )}
                 
                 {error && (
                 <p className="mt-8 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
@@ -88,13 +88,11 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
                 </p>
                 )}
 
-                
-
-
-
+            
                 <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:gap-6">
 
                     {outfits.map((outfit, index) => (
+                        
                         <div
                         key={index}
                         className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
