@@ -99,81 +99,82 @@ const Recommendations = ({ refreshTrigger = 0 }) => {
                     {recommendations.map((rec, index) => (
                     
                     <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.1, delay: index * 0.1}}
-                    key={index}
-                    className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.1, delay: index * 0.1}}
+                        key={index}
+                        className="relative rounded-xl border p-4 shadow-sm bg-white w-full"                    
                     >
 
-                    {/* <FaHeart/> */}
+                        {/* <FaHeart/> */}
 
-                    <button
-                        type="button"
-                        onClick={() => toggleLike(rec)}
-                        className="absolute top-4 right-4"
-                    >
-
-                        {rec.liked ? (
-                            <FaHeart className="text-red-500 cursor-pointer" />
-                        ) : (
-                            <FaRegHeart className='text-gray-400 hover:text-red-500 cursor-pointer'/>
-                        )}
-
-                    </button>
-                    
-                
-                    <p className="font-semibold text-lg">
-                        Score: {rec.score}
-                    </p>
-
-                    <p className="text-sm text-gray-500 mb-4">
-                        Confidence: {rec.confidence}
-                    </p>
-
-                    {/* Outfit */}
-                    <div className="grid grid-rows-3 gap-4">
-                        {/* Top */}
-                        
-                        <div>
-                        <img
-                            src={rec.outfit.top.image_url}
-                            alt="top"
-                            className="w-40 h-40 object-cover rounded-lg"
-                        />
-                        </div>
-
-                        {/* Bottom */}
-                        <div>
-                        <img
-                            src={rec.outfit.bottom.image_url}
-                            alt="bottom"
-                            className="w-40 h-40 object-cover rounded-lg"
-                        />
-                        </div>
-
-                        {/* Shoes */}
-                        <div>
-                        <img
-                            src={rec.outfit.shoes.image_url}
-                            alt="shoes"
-                            className="w-40 h-40 object-cover rounded-lg"
-                        />
-                        </div>
-                    </div>
-
-                    {/* Reasons */}
-                    {/* <div className="mt-4 flex flex-wrap gap-2">
-                        {rec.reasons.map((reason, i) => (
-                        <span
-                            key={i}
-                            className="text-xs bg-black text-white px-2 py-1 rounded-full"
+                        <button
+                            type="button"
+                            onClick={() => toggleLike(rec)}
+                            className="absolute top-4 right-4"
                         >
-                            {reason}
-                        </span>
-                        ))}
-                    </div> */}
+
+                            {rec.liked ? (
+                                <FaHeart className="text-red-500 cursor-pointer" />
+                            ) : (
+                                <FaRegHeart className='text-gray-400 hover:text-red-500 cursor-pointer'/>
+                            )}
+
+                        </button>
+                        
+                    
+                        <p className="font-semibold text-lg">
+                            Score: {rec.score}
+                        </p>
+
+                        <p className="text-sm text-gray-500 mb-4">
+                            Confidence: {rec.confidence}
+                        </p>
+
+                        {/* Outfit */}
+                        <div className="grid grid-rows-3 gap-4">
+                            {/* Top */}
+                            
+                            <div>
+                            <img
+                                src={rec.outfit.top.image_url}
+                                alt="top"
+                                className="w-40 h-40 object-cover rounded-lg"
+                            />
+                            </div>
+
+                            {/* Bottom */}
+                            <div>
+                            <img
+                                src={rec.outfit.bottom.image_url}
+                                alt="bottom"
+                                className="w-40 h-40 object-cover rounded-lg"
+                            />
+                            </div>
+
+                            {/* Shoes */}
+                            <div>
+                            <img
+                                src={rec.outfit.shoes.image_url}
+                                alt="shoes"
+                                className="w-40 h-40 object-cover rounded-lg"
+                            />
+                            </div>
+                        </div>
+
+                        {/* Reasons */}
+                        {/* <div className="mt-4 flex flex-wrap gap-2">
+                            {rec.reasons.map((reason, i) => (
+                            <span
+                                key={i}
+                                className="text-xs bg-black text-white px-2 py-1 rounded-full"
+                            >
+                                {reason}
+                            </span>
+                            ))}
+                        </div> */}
+                        
                     </motion.div>
                 ))}
                 </div>
