@@ -69,8 +69,8 @@ function Items({ refreshTrigger = 0 }) {
         {!loading && !error&& (
             <motion.h2 
               initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
               className="text-2xl font-bold tracking-tight text-gray-900">
                 Your Items
             </motion.h2>
@@ -90,12 +90,23 @@ function Items({ refreshTrigger = 0 }) {
             if (list.length === 0) return null
             return (
               <section key={cat} className="mt-10">
-                <h3 className="text-lg font-semibold text-gray-800">
+                
+                <motion.h3 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1 }}
+                  className="text-lg font-semibold text-gray-800"
+                  >
                   {CATEGORY_LABELS[cat] ?? cat}
-                </h3>
+                </motion.h3>
+
+
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                   {list.map((item) => (
-                    <article
+                    <motion.article
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 1 }}
                       key={item.id}
                       className="group relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50 shadow-sm"
                     >
@@ -105,7 +116,7 @@ function Items({ refreshTrigger = 0 }) {
                         className="aspect-square w-50 h-50 object-cover transition group-hover:opacity-90"
                         loading="lazy"
                       />
-                    </article>
+                    </motion.article>
                   ))}
                 </div>
               </section>
