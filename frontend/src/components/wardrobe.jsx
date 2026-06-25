@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { API_BASE } from '../config'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { motion } from "framer-motion"
 
 
 
@@ -69,11 +70,16 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
             
             <div className="mx-5 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 
-                <h2 
+                
+                
+                <motion.h2 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
                 className="text-2xl font-bold tracking-tight text-gray-900"
                 >
                     Your Wardrobe
-                </h2>
+                </motion.h2>
 
                 
                 {error && (
