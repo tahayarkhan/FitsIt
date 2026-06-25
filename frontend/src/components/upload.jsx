@@ -66,7 +66,7 @@ function Upload({ onSuccess }) {
           name="category"
           value={category}
           onChange={(ev) => setCategory(ev.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
         >
           {CATEGORIES.map((c) => (
             <option key={c.value} value={c.value}>
@@ -93,7 +93,7 @@ function Upload({ onSuccess }) {
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1 text-sm text-gray-600">
             <label
               htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md font-semibold text-indigo-600 hover:text-indigo-500 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600"
+              className="relative cursor-pointer rounded-md font-semibold text-gray-600 hover:text-gray-500 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-gray-600"
             >
               <span>Upload a file</span>
               <input
@@ -126,7 +126,7 @@ function Upload({ onSuccess }) {
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex justify-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-grey-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? 'Uploading…' : 'Upload'}
         </button>
