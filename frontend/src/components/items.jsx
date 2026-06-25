@@ -70,7 +70,7 @@ function Items({ refreshTrigger = 0 }) {
             <motion.h2 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.2 }}
               className="text-2xl font-bold tracking-tight text-gray-900">
                 Your Items
             </motion.h2>
@@ -94,7 +94,7 @@ function Items({ refreshTrigger = 0 }) {
                 <motion.h3 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1 }}
+                  transition={{ duration: 0.3}}
                   className="text-lg font-semibold text-gray-800"
                   >
                   {CATEGORY_LABELS[cat] ?? cat}
@@ -102,11 +102,11 @@ function Items({ refreshTrigger = 0 }) {
 
 
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {list.map((item) => (
+                  {list.map((item, index) => (
                     <motion.article
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.5}}
                       key={item.id}
                       className="group relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50 shadow-sm"
                     >
