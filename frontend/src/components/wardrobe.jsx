@@ -72,7 +72,6 @@ const Wardrobe = ({ refreshTrigger = 0 }) => {
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900">Your Wardrobe</h2>
 
                 
-                {loading && <p className="mt-8 text-sm text-gray-500">Loading…</p>}
                 {error && (
                 <p className="mt-8 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
                     {error}
