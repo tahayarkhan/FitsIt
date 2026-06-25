@@ -94,7 +94,7 @@ function Items({ refreshTrigger = 0 }) {
                 <motion.h3 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3}}
+                  transition={{ duration: 0.2}}
                   className="text-lg font-semibold text-gray-800"
                   >
                   {CATEGORY_LABELS[cat] ?? cat}
@@ -107,7 +107,7 @@ function Items({ refreshTrigger = 0 }) {
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.5}}
+                      transition={{ duration: 0.2, delay: index * 0.2}}
                       key={item.id}
                       className="group relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50 shadow-sm"
                     >
