@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Navigation from './components/navigation'
 import { motion } from "framer-motion"
 
