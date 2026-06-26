@@ -1,8 +1,13 @@
 import statistics
-
 from itertools import combinations
 
-from utils.color_utils import (hue_distance_deg, is_neutral, lightness_contrast, rgb_to_lch)
+from utils.color_utils import (
+    hue_distance_deg,
+    is_neutral,
+    lightness_contrast,
+    rgb_to_lch,
+)
+
 
 class OutfitScorer:
 
@@ -186,9 +191,10 @@ class OutfitScorer:
 def main():
     
     import os
+
     from dotenv import load_dotenv
-    from supabase import create_client
     from outfit_generator_test import OutfitGenerator
+    from supabase import create_client
 
     load_dotenv()
     SUPABASE_URL = os.getenv("SUPABASE_URL")

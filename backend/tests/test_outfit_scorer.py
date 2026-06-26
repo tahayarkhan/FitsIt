@@ -1,8 +1,5 @@
-from unittest import result
-from backend.app import scorer
-from backend.services import Outfit
-from backend.utils import color_utils
 from services.outfit_scorer import OutfitScorer
+
 
 def make_outfit_item(rgb: dict| None) -> dict:
     return {

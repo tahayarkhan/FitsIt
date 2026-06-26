@@ -1,14 +1,12 @@
 import colorsys
+from io import BytesIO
 
 import numpy as np
-from PIL import Image
-from sklearn.cluster import KMeans
-from scipy import ndimage
-from transformers import SegformerImageProcessor, SegformerForSemanticSegmentation
 import torch
-
-from io import BytesIO 
-
+from PIL import Image
+from scipy import ndimage
+from sklearn.cluster import KMeans
+from transformers import SegformerForSemanticSegmentation, SegformerImageProcessor
 
 CLOTHING_LABELS = {
     0: "Background",

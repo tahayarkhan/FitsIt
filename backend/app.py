@@ -1,17 +1,14 @@
+import asyncio
 import os
 from uuid import uuid4
-import asyncio
+
+from color_extraction import ColorExtractor
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from supabase import create_client
-
-
-from color_extraction import ColorExtractor
-
 from services.outfit_generator import OutfitGenerator
 from services.outfit_scorer import OutfitScorer
-
+from supabase import create_client
 
 load_dotenv()
 

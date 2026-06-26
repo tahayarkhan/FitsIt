@@ -1,5 +1,6 @@
-from typing import TypedDict
 from itertools import product
+from typing import TypedDict
+
 
 class OutfitItem(TypedDict):
     id: str
