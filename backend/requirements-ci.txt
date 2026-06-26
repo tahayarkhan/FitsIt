@@ -1,0 +1,4 @@
+pytest
+ruff
+numpy
+colour-science>=0.4.4

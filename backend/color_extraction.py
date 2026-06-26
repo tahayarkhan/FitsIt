@@ -1,7 +1,4 @@
-from platform import processor
-import sys
 import colorsys
-from pathlib import Path
 
 import numpy as np
 from PIL import Image
@@ -11,7 +8,6 @@ from transformers import SegformerImageProcessor, SegformerForSemanticSegmentati
 import torch
 
 from io import BytesIO 
-import requests
 
 
 CLOTHING_LABELS = {
@@ -89,7 +85,7 @@ class ColorExtractor:
         mask = np.isin(segmentation, list(GARMENT_LABEL_IDS))
 
         unique_labels = np.unique(segmentation)
-        detected = [CLOTHING_LABELS.get(l, f"Unknown({l}))") for l in unique_labels]
+        detected = [CLOTHING_LABELS.get(label_id, f"Unknown({label_id}))") for label_id in unique_labels]
         print(f"Detected segments: {', '.join(detected)}")
 
         return mask.astype(np.uint8), segmentation
@@ -176,14 +172,14 @@ class ColorExtractor:
         # Normalize RGB to 0-1 range
         r_norm, g_norm, b_norm = r / 255.0, g / 255.0, b / 255.0
 
-        h, l, s = colorsys.rgb_to_hls(r_norm, g_norm, b_norm)
+        h, lightness, s = colorsys.rgb_to_hls(r_norm, g_norm, b_norm)
 
         h_degrees = int(h * 360)
         
         return {
             "h": h_degrees,
             "s": round(s, 3),
-            "l": round(l, 3)
+            "l": round(lightness, 3)
         }
 
     def extract_colours(self, image: Image.Image, k: int = 4) -> dict:

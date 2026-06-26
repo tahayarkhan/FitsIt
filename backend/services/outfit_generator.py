@@ -110,19 +110,19 @@ class OutfitGenerator:
 
 
 def main():
-    import os
-    from dotenv import load_dotenv
-    from supabase import create_client
-    from pprint import pprint
+    # import os
+    # from dotenv import load_dotenv
+    # from supabase import create_client
 
 
-    load_dotenv()
-    SUPABASE_URL = os.getenv("SUPABASE_URL")
-    SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+    # load_dotenv()
+    # SUPABASE_URL = os.getenv("SUPABASE_URL")
+    # SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
     
-    supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    # supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-    Og = OutfitGenerator(supabase_client)
+    # Og = OutfitGenerator(supabase_client)
+    return -1
 
 
 if __name__ == "__main__":

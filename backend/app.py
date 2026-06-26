@@ -219,13 +219,9 @@ async def get_recommendations(top_n: int = 5):
 
 @app.patch("/recommendations/{recommendation_id}")
 async def update_recommendation(recommendation_id: str, liked: bool):
-        try:
-            result = (
-                supabase.table("recommendations")
-                .update({"liked": liked})
-                .eq("id", recommendation_id)
-                .execute()
-            )
+        try:     
+            supabase.table("recommendations").update({"liked": liked}).eq("id", recommendation_id).execute()
+            
         except Exception as exc:
             raise HTTPException(
                 status_code=502,
