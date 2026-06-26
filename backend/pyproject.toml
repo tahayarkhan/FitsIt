@@ -1,0 +1,7 @@
+[tool.ruff]
+target-version = "py311"
+src = ["backend"]
+exclude = ["venv", "__pycache__"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]  # errors, pyflakes, import sort
