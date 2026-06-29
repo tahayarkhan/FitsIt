@@ -5,12 +5,3 @@ supabase>=2.28
 python-multipart>=0.0.9
 httpx>=0.28
 
-# Phase 2: Color extraction dependencies
-torch>=2.0
-torchvision>=0.15
-transformers>=4.35
-Pillow>=10.0
-scikit-learn>=1.3
-scipy>=1.11
-numpy>=1.24
-colour-science>=0.4.4
