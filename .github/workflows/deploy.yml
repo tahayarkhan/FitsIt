@@ -1,0 +1,64 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-backend:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      
+      - uses: google-github-actions/auth@v2
+        with: 
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        env:
+          IMAGE: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO }}/backend
+          SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          docker build -t "${IMAGE}:${SHA}" -t "${IMAGE}:latest" backend
+          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev --quiet
+          docker push "${IMAGE}:${SHA}"
+          docker push "${IMAGE}:latest"
+      - name: Deploy to Cloud Run
+        env:
+          IMAGE: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPO }}/backend
+          SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          cat > /tmp/cloudrun-env.yaml <<EOF
+          FRONTEND: "${{ secrets.FRONTEND_ORIGIN }}"
+          SUPABASE_URL: "${{ secrets.SUPABASE_URL }}"
+          SUPABASE_SERVICE_KEY: "${{ secrets.SUPABASE_SERVICE_KEY }}"
+          EOF
+          gcloud run deploy fitsit-api \
+            --image "${IMAGE}:${SHA}" \
+            --region ${{ secrets.GCP_REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --memory 8Gi \
+            --cpu 2 \
+            --timeout 300 \
+            --concurrency 2 \
+            --min-instances 0 \
+            --max-instances 3 \
+            --cpu-boost \
+            --no-cpu-throttling \
+            --env-vars-file /tmp/cloudrun-env.yaml
+
